@@ -1,7 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-
-const regex = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/i;
-const validateId = Joi.string().length(24).hex().alphanum();
+const { validateId, regex } = require('../utils/constants');
 
 module.exports.validateSignUp = celebrate({
   body: Joi.object().keys({
@@ -42,7 +40,7 @@ module.exports.validateCreateMovie = celebrate({
 
 module.exports.validateMovieId = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required(),
+    movieId: validateId,
   }),
 });
 

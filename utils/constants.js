@@ -1,4 +1,5 @@
 const rateLimit = require('express-rate-limit');
+const Joi = require('joi');
 
 module.exports.CREATED_STATUS = 201;
 module.exports.INTERNAL_SERVER = 'ошибка сервера';
@@ -16,3 +17,8 @@ module.exports.limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
 });
+module.exports.protocols = {
+  protocols: ['http', 'https'],
+};
+module.exports.regex = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/i;
+module.exports.validateId = Joi.string().length(24).hex().alphanum();

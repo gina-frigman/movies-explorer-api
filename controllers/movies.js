@@ -6,7 +6,7 @@ const {
   BAD_REQUEST, NOT_FOUND, FORBIDDEN, CREATED_STATUS,
 } = require('../utils/constants');
 
-module.exports.getLikedMovies = (req, res, next) => {
+module.exports.getMovies = (req, res, next) => {
   Movie.find({})
     .then((movies) => {
       res.send(movies);
@@ -35,7 +35,20 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
   })
     .then((movie) => {
-      res.status(CREATED_STATUS).send(movie);
+      res.status(CREATED_STATUS).send({
+        country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: movie.image,
+        trailerLink: movie.trailerLink,
+        thumbnail: movie.thumbnail,
+        owner: movie.owner,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+        movieId: movie.movieId,
+      });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -56,10 +69,11 @@ module.exports.deleteMovie = (req, res, next) => {
       } else if (userId !== movie.owner.toString()) {
         next(new ForbiddenError(FORBIDDEN));
       } else {
-        Movie.findByIdAndRemove(movieId);
+        Movie.findByIdAndRemove(movieId)
+          .then((deletedMovie) => res.send(deletedMovie))
+          .catch(next);
       }
     })
-    .then((deletedMovie) => res.send(deletedMovie))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequestError(BAD_REQUEST));
