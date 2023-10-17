@@ -1,3 +1,11 @@
-const { NODE_ENV, JWT_SECRET, MONGO_DB = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
-module.exports.JWT_SECRET = NODE_ENV === 'production' ? JWT_SECRET : 'very-secret-key';
-module.exports = MONGO_DB;
+const { PORT = 3000 } = process.env;
+const { MONGO_DB = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
+const { NODE_ENV = 'development' } = process.env;
+const { JWT_SECRET = 'very-secret-key' } = process.env;
+
+module.exports = {
+  PORT,
+  MONGO_DB,
+  NODE_ENV,
+  JWT_SECRET,
+};
