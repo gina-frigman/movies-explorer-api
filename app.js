@@ -27,8 +27,8 @@ app.use(requestLogger);
 app.use(limiter);
 app.use(router);
 app.use(errors());
-app.use(errorLogger);
 app.use(errorHandler);
+app.use(errorLogger);
 
 app.listen(PORT);
 module.exports = app;

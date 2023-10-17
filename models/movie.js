@@ -28,7 +28,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, REQUIRED],
     validate: {
       validator(image) {
-        validator.isURL(image, protocols);
+        return validator.isURL(image, protocols);
       },
       message: INCORRECT_URL,
     },
@@ -38,7 +38,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, REQUIRED],
     validate: {
       validator(trailerLink) {
-        validator.isURL(trailerLink, protocols);
+        return validator.isURL(trailerLink, protocols);
       },
       message: INCORRECT_URL,
     },
@@ -48,7 +48,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, REQUIRED],
     validate: {
       validator(thumbnail) {
-        validator.isURL(thumbnail, protocols);
+        return validator.isURL(thumbnail, protocols);
       },
       message: INCORRECT_URL,
     },

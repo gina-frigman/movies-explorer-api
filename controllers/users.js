@@ -1,7 +1,8 @@
 const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
-const { NOT_FOUND, BAD_REQUEST } = require('../utils/constants');
+const { NOT_FOUND, BAD_REQUEST, CONFLICT } = require('../utils/constants');
+const ConflictError = require('../errors/ConflictError');
 
 module.exports.getProfileInfo = (req, res, next) => {
   const { userId } = req.params;
@@ -17,8 +18,8 @@ module.exports.getProfileInfo = (req, res, next) => {
 
 module.exports.editProfileInfo = (req, res, next) => {
   const userId = req.user._id;
-  const { name } = req.body;
-  User.findByIdAndUpdate(userId, { name }, {
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(userId, { name, email }, {
     runValidators: true,
     new: true,
   })
@@ -31,6 +32,8 @@ module.exports.editProfileInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequestError(BAD_REQUEST));
+      } else if (err.code === 11000) {
+        next(new ConflictError(CONFLICT));
       } else {
         next(err);
       }
