@@ -35,13 +35,13 @@ module.exports.validateCreateMovie = celebrate({
     thumbnail: Joi.string().required().regex(regex),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    movieId: Joi.number().required(),
+    _id: Joi.number().required(),
   }),
 });
 
 module.exports.validateMovieId = celebrate({
   params: Joi.object().keys({
-    movieId: validateId,
+    _id: validateId,
   }),
 });
 

@@ -19,7 +19,7 @@ module.exports.createMovie = (req, res, next) => {
   const owner = req.user._id;
   const {
     country, director, duration, year, description, image,
-    trailerLink, thumbnail, nameRU, nameEN, movieId,
+    trailerLink, thumbnail, nameRU, nameEN, _id,
   } = req.body;
   Movie.create({
     country,
@@ -33,7 +33,7 @@ module.exports.createMovie = (req, res, next) => {
     owner,
     nameRU,
     nameEN,
-    movieId,
+    _id,
   })
     .then((movie) => {
       res.status(CREATED_STATUS).send({
@@ -48,7 +48,7 @@ module.exports.createMovie = (req, res, next) => {
         owner: movie.owner,
         nameRU: movie.nameRU,
         nameEN: movie.nameEN,
-        movieId: movie.movieId,
+        _id: movie.id,
       });
     })
     .catch((err) => {
@@ -62,15 +62,15 @@ module.exports.createMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   const userId = req.user._id;
-  const { movieId } = req.params;
-  Movie.findById(movieId)
+  const { _id } = req.params;
+  Movie.findById(_id)
     .then((movie) => {
       if (!movie) {
         next(new NotFoundError(NOT_FOUND));
       } else if (userId !== movie.owner.toString()) {
         next(new ForbiddenError(FORBIDDEN));
       } else {
-        Movie.findByIdAndRemove(movieId)
+        Movie.findByIdAndRemove(_id)
           .then((deletedMovie) => res.send(deletedMovie))
           .catch(next);
       }
