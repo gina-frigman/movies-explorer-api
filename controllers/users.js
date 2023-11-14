@@ -5,8 +5,7 @@ const { NOT_FOUND, BAD_REQUEST, CONFLICT } = require('../utils/constants');
 const ConflictError = require('../errors/ConflictError');
 
 module.exports.getProfileInfo = (req, res, next) => {
-  const { userId } = req.params;
-  User.findOne({ userId })
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         return next(new NotFoundError(NOT_FOUND));
