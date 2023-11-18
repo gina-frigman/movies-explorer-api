@@ -19,7 +19,7 @@ module.exports.createMovie = (req, res, next) => {
   const owner = req.user._id;
   const {
     country, director, duration, year, description, image,
-    trailerLink, thumbnail, nameRU, nameEN, _id,
+    trailerLink, thumbnail, nameRU, nameEN, movieId,
   } = req.body;
   Movie.create({
     country,
@@ -33,24 +33,9 @@ module.exports.createMovie = (req, res, next) => {
     owner,
     nameRU,
     nameEN,
-    _id,
+    movieId,
   })
-    .then((movie) => {
-      res.status(CREATED_STATUS).send({
-        country: movie.country,
-        director: movie.director,
-        duration: movie.duration,
-        year: movie.year,
-        description: movie.description,
-        image: movie.image,
-        trailerLink: movie.trailerLink,
-        thumbnail: movie.thumbnail,
-        owner: movie.owner,
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
-        _id: movie.id,
-      });
-    })
+    .then((movie) => res.status(CREATED_STATUS).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequestError(BAD_REQUEST));
@@ -62,15 +47,15 @@ module.exports.createMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   const userId = req.user._id;
-  const { _id } = req.params;
-  Movie.findById(_id)
+  const { movieId } = req.params;
+  Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
         next(new NotFoundError(NOT_FOUND));
       } else if (userId !== movie.owner.toString()) {
         next(new ForbiddenError(FORBIDDEN));
       } else {
-        Movie.findByIdAndRemove(_id)
+        Movie.findByIdAndRemove(movieId)
           .then((deletedMovie) => res.send(deletedMovie))
           .catch(next);
       }

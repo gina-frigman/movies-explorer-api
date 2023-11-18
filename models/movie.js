@@ -58,16 +58,16 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  _id: {
-    type: Number,
-    required: [true, REQUIRED],
-  },
   nameRU: {
     type: String,
     required: [true, REQUIRED],
   },
   nameEN: {
     type: String,
+    required: [true, REQUIRED],
+  },
+  movieId: {
+    type: Number,
     required: [true, REQUIRED],
   },
 });
