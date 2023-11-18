@@ -15,7 +15,7 @@ module.exports.INCORRECT_URL = 'неверно указан url';
 module.exports.INCORRECT_EMAIL = 'неверно указан email';
 module.exports.limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 1000,
 });
 module.exports.protocols = {
   protocols: ['http', 'https'],
