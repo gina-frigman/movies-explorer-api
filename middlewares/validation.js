@@ -39,9 +39,9 @@ module.exports.validateCreateMovie = celebrate({
   }),
 });
 
-module.exports.validateMovieId = celebrate({
+module.exports.validateDeleteMovie = celebrate({
   params: Joi.object().keys({
-    _id: validateId,
+    movieId: Joi.string().length(24).hex().required(),
   }),
 });
 
