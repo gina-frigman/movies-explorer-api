@@ -1,6 +1,5 @@
 const { default: mongoose } = require('mongoose');
 const bcrypt = require('bcrypt');
-const validator = require('validator');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const {
   UNAUTHORIZED, REQUIRED, INCORRECT_EMAIL, MIN_SYMBOLS, MAX_SYMBOLS,
@@ -13,7 +12,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator(email) {
-        return validator.isEmail(email);
+        return /^\S+@\S+\.\S+$/.test(email);
       },
       message: INCORRECT_EMAIL,
     },
